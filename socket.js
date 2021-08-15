@@ -11,20 +11,24 @@ app.get('/', function(req, res) {
 })
 
 io.on('connection', (socket) => {
-    console.log('connection established')
+    console.log(`Connection ${socket.id} established.`)
 
     socket.on('sendRequestToServer', (data) => {
-        console.log(data)
+        console.log(`Incoming request from ${data.name} with e-mail ${data.email}.`)
         io.sockets.emit('sendRequestToAdmin', data)
     })
 
     socket.on('sendResponseToServer', (data) => {
-        console.log(data)
+        if(data.action == 'reject'){
+            console.log(`Request ${data.socket_id} rejected by Admin.`)
+        } else {
+            console.log(`Request ${data.socket_id} accepted by Admin.`)
+        }
         io.sockets.emit('sendResponseToClient', data)
     })
 
     socket.on('disconnect', (socket) => {
-        console.log('disconnected')
+        console.log('Disconnected.')
     })
 });
 
