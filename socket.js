@@ -1,4 +1,5 @@
 const { Socket } = require('dgram')
+require('dotenv').config()
 const express = require('express')
 const app = express()
 const server = require('http').createServer(app)
@@ -6,8 +7,20 @@ const io = require('socket.io')(server, {
     cors: { origin : "*" }
 })
 
+app.use(express.json());
+
 app.get('/', function(req, res) {
     res.send('Socket is up and running!')
+})
+
+app.post('/alert', function(req, res) {
+    console.log('Alert received.')
+    if(req.body.SECRET_KEY == process.env.SECRET_KEY){
+        io.sockets.emit("getRecruitmentAlert", req.body.message);
+        res.send('Alert sent.')
+    } else {
+        res.send('ERROR!')
+    }
 })
 
 io.on('connection', (socket) => {
