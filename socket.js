@@ -16,7 +16,18 @@ app.get('/', function(req, res) {
 app.post('/alert', function(req, res) {
     console.log('Alert received.')
     if(req.body.SECRET_KEY == process.env.SECRET_KEY){
-        io.sockets.emit("getRecruitmentAlert", req.body.message);
+        switch (req.body.apps) {
+            case 'recruitment':
+                io.sockets.emit("getRecruitmentAlert", req.body.message);
+                break;
+        
+            case 'hr':
+                io.sockets.emit("getHrAlert", req.body.message);
+                break;
+        
+            default:
+                break;
+        }
         res.send('Alert sent.')
     } else {
         res.send('ERROR!')
