@@ -8,6 +8,10 @@ const io = require('socket.io')(server, {
     cors: { origin : "*" }
 })
 
+app.use(cors({
+    origin: '*'
+}));
+
 let clients = []
 app.use(express.json());
 
