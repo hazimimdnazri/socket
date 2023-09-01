@@ -10,7 +10,6 @@ const io = require('socket.io')(server, {
 
 let clients = []
 app.use(express.json());
-app.use(cors())
 
 // app.post('/alert', (req, res) => {
 //     console.log('Alert received.')
